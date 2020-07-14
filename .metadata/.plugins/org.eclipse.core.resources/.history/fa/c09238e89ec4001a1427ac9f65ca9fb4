@@ -1,0 +1,16 @@
+package com.spring.domain;
+
+public class SampleVO {
+	private String mno;
+	private String firstName;
+	private String lastName;	
+	
+	public SampleVO(String mno, String firstName, String lastName) {
+		this.mno=mno;
+		this.firstName=firstName;
+		this.lastName=lastName;
+	}
+}
+
+
+

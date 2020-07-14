@@ -1,0 +1,36 @@
+package com.spring.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.spring.domain.AuthVO;
+import com.spring.domain.RegisterVO;
+import com.spring.service.MemberService;
+import com.spring.service.RegisterService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RestController
+@RequestMapping("/member")
+public class MemberRestController {
+
+	@Autowired
+	private MemberService service;
+	
+	@DeleteMapping("/leave")
+	public void leavePost(@PathVariable("userid") String userid, @PathVariable("password") String password) {
+		log.info("회원탈퇴 => userid : "+userid+" password : "+password);
+//		if(service.leave(userid, password)>0) {
+//			return "redirect:/";
+//		}else {
+//			return "/member/leave";
+//		}
+		
+	}	
+}

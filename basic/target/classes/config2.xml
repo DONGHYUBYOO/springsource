@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="student" class="com.spring.stu.Student">
+		<constructor-arg name="name" value="홍길동"/>
+		<constructor-arg name="age" value="15"/>
+		<constructor-arg name="classNum" value="3"/>
+	</bean>
+	<!-- bean을 통해 생성한다는 것은 기본 생성자를 이용 -->
+	<bean id="info" class="com.spring.stu.StudentInfo">
+		<property name="student" ref="student"/>
+		<!-- <constructor-arg ref="student"/> -->
+	</bean>
+	
+	
+</beans>

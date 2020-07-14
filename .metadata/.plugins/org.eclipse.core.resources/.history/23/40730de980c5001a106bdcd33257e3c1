@@ -1,0 +1,7 @@
+package com.spring.service;
+
+import com.spring.domain.ReplyVO;
+
+public interface ReplyService {
+	public int insertReply(ReplyVO reply);
+}

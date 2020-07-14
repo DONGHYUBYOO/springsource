@@ -1,0 +1,30 @@
+package com.spring.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.spring.domain.SampleVO;
+
+@RestController	//리턴값을 마음대로 전송할 수 있다.
+public class RestControllerTest {
+	
+	//produces : 서버에서 생산하는 문서의 타입을 지정
+	@GetMapping(value="/hello", produces="text/plain;charset=utf-8")
+	public String sayHello() {
+		return "박유성모마리아";
+	}
+	
+	@GetMapping("/sendVO")
+	public SampleVO sendVO() {
+		SampleVO sample = new SampleVO();
+		sample.setMno("1234");
+		sample.setFirstName("hong");
+		sample.setLastName("Dong");
+		return sample;
+		//json databind 라이브러리를 통해 jason 형태로 출력가능
+		//key:value 형식으로
+		// EX) {"mno":"1234","firstName":"hong","lastName":"Dong"}
+		//xml과 json 라이브러리를 동시에 사용 시 default로 xml 타입으로 나온다
+		//하지만 주소 뒤에 .json을 통해 json 형식으로 다시 출력 가능
+	}
+}

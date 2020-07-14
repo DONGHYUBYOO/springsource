@@ -1,0 +1,15 @@
+package com.spring.service;
+
+import java.util.List;
+
+import com.spring.domain.ArticleVO;
+import com.spring.domain.ModifyVO;
+import com.spring.domain.ReadVO;
+import com.spring.domain.RegistVO;
+
+public interface BoardService {
+	public List<ArticleVO> listArticle();
+	public int insertArticle(RegistVO regist);
+	public ReadVO getArticle(int bno);
+	public int modifyArticle(ModifyVO modify);
+}

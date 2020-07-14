@@ -1,0 +1,4 @@
+176  [main] ERROR com.spring.log.LogTest - error 레벨
+180  [main] WARN  com.spring.log.LogTest - warn 레벨
+180  [main] INFO  com.spring.log.LogTest - info 레벨
+180  [main] DEBUG com.spring.log.LogTest - debug 레벨

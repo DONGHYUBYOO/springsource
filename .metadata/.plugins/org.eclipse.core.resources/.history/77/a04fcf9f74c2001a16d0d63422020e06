@@ -1,0 +1,17 @@
+<script>
+		let info='${info}';
+		let error='${error}';
+		
+		if(info !== '') {
+			alert(info);
+			return false;
+		}else if(error !== '') {
+			alert(info);		
+			return false;
+		}
+</script>
+ </div>
+        <!-- /#page-wrapper -->
+    </div>
+   </body>
+</html>

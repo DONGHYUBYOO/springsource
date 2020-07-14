@@ -1,0 +1,8 @@
+package com.spring.service;
+
+import com.spring.domain.PartnerVO;
+
+public interface PartnerService {
+	public int registPartner(PartnerVO partner);
+	public PartnerVO listPartner();	
+}

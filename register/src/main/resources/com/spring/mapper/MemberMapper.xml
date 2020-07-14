@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mapper.MemberMapper">
+	<select id="isLogin" resultType="com.spring.domain.AuthVO">
+		select * from member where userid=#{userid} and password=#{password}
+	</select>
+	<select id="checkPWD" resultType="java.lang.String">
+		select password from member where userid=#{userid} 
+	</select>
+	<update id="changePWD">
+		update member set password=#{confirm_password} where userid=#{userid}
+	</update>
+	<delete id="leave">
+		delete from member where userid=#{userid} and password=#{password}
+	</delete>
+</mapper>

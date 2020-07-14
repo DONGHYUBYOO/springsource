@@ -1,0 +1,10 @@
+1593563229444	Delete elements
+1593563402068	Delete element
+1593563654372	Rename resource 'transaction'
+1593563719079	Rename resource 'mapper.xml'
+1593563755474	Rename type 'Service'
+1593563792626	Rename resource 'TransactionMapper.xml'
+1593563799495	Rename type 'TransactionMapper'
+1593563804102	Rename type 'TransactionService'
+1593563930706	Rename type 'SampleMapper'
+1593564485777	Rename type 'TransactionClient'

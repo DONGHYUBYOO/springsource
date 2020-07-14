@@ -1,0 +1,8 @@
+package com.spring.domain;
+
+public class SampleVO {
+	private String mno;
+	private String firstName;
+	private String lastName;
+	
+}
