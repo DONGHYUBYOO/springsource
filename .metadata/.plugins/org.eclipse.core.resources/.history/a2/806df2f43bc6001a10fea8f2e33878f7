@@ -1,0 +1,25 @@
+/**
+* 댓글 작성 스크립트
+*/
+let replyService=(function(){
+	//직접 호출할 수 없는 함수
+	function add(reply){
+		console.log("add method 실행");
+		console.log(reply);
+		
+		$.ajax({
+			url:"replies/new",
+			type:"post",
+			contentType:"application/json",
+			data:JSON.stringify(reply),
+			success:function(result){
+				console.log(result);
+			},
+			error:function(xhr, txtstatus, error){
+				console.log(xhr.responseText);
+			}
+		})
+	}	
+	//return 구문에 의해서 각 함수의 결과를 리턴 받기
+	return {add:add};
+})();

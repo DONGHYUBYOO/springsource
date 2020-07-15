@@ -2,4 +2,6 @@ package com.spring.service;
 
 import com.spring.domain.PartnerVO;
 
-p
+public interface PartnerService {
+	public int create(PartnerVO partner);
+}

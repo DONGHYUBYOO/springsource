@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ include file="../includes/header.jsp" %>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -13,19 +14,19 @@ pageEncoding="UTF-8"%>
           <form action="" method="post" role="form">
             <div class="form-group">
               <label>회사명</label>
-              <input class="form-control" name="" />
+              <input class="form-control" name="name" />
             </div>
             <div class="form-group">
               <label>ceo 명</label>
-              <input class="form-control" name="" />
+              <input class="form-control" name="ceo" />
             </div>
             <div class="form-group">
               <label>연락처</label>
-              <input class="form-control" name="" />
+              <input class="form-control" name="contact" />
             </div>
             <div class="form-group">
               <label>주소</label>
-              <input class="form-control" name="" />
+              <input class="form-control" name="address" />
             </div>
             <button type="submit" class="btn btn-primary">submit</button>
             <button type="reset" class="btn btn-warning">reset</button>
