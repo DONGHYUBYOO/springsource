@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.domain.CriteriaVO;
+import com.spring.domain.ReplyPageVO;
 import com.spring.domain.ReplyVO;
 import com.spring.service.ReplyService;
 
@@ -67,10 +68,10 @@ public class ReplyController {
 	//글번호에 해당하는 댓글 리스트 가져오기
 	//http://localhost:8080/replies/pages/bno/페이지번호
 	@GetMapping("/pages/{bno}/{pageNum}")
-	public ResponseEntity<List<ReplyVO>> listReply(@PathVariable("bno") int bno, @PathVariable("pageNum") int pageNum){
+	public ResponseEntity<ReplyPageVO> listReply(@PathVariable("bno") int bno, @PathVariable("pageNum") int pageNum){
 		log.info("댓글 가져오기 => bno : "+bno+" page : "+pageNum);
 		
 		CriteriaVO criteria = new CriteriaVO(pageNum, 10);
-		return new ResponseEntity<List<ReplyVO>>(service.listReply(criteria, bno), HttpStatus.OK);
+		return new ResponseEntity<ReplyPageVO>(service.listReply(criteria, bno), HttpStatus.OK);
 	}	
 }

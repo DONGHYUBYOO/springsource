@@ -11,4 +11,8 @@
 	<insert id="create">
 		insert into partner(id, name, ceo, contact, address) values(partner_seq.nextval, #{name}, #{ceo}, #{contact}, #{address})
 	</insert>
+	
+	<select id="list" resultType="com.spring.domain.PartnerVO">
+		select * from partner
+	</select>
 </mapper>

@@ -28,15 +28,16 @@ let replyService=(function(){
 	
 	function getList(param, callback){
 		let bno=param.bno;
-		let page=param.page||1;
+		let page=param.page||1;	//페이지 값이 안들어올 시 1이 입력
 		
 		console.log("bno : "+bno);
 		console.log("page : "+page);
 		
 		let url="/replies/pages/"+bno+"/"+page;
 		$.getJSON(url, function(data) {
+			console.log(data);
 			if(callback){
-				callback(data);
+				callback(data.replyCnt, data.list);
 			}
 		})
 	}//getList 종료

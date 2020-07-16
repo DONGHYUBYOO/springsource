@@ -34,14 +34,16 @@ pageEncoding="UTF-8"%> <%@include file="../includes/header.jsp" %>
             </thead>
             <tbody>
               <!-- 파트너 리스트 반복문 -->
-              <tr class="text-center">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+              <c:forEach var="list" items="${list}">
+	              <tr class="text-center">
+	                <td>${list.id}</td>
+	                <td>${list.name}</td>
+	                <td>${list.ceo}</td>
+	                <td>${list.contact}</td>
+	                <td>${list.address}</td>
+	                <td>${list.registered}</td>
+	              </tr>
+              </c:forEach>
             </tbody>
           </table>
         </div>

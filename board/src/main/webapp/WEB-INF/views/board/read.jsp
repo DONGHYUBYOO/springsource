@@ -69,6 +69,10 @@
 						</div>
 					</li>
 				</ul>
+			</div>
+			<%-- 댓글 페이지 영역 --%>
+			<div class="panel-footer">
+				
 			</div>			
 		</div>
 	</div>
@@ -100,7 +104,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-warning" id="modalRegisterBtn">등록</button>
         <button type="button" class="btn btn-success" id="modalModifyBtn">수정</button>
-        <button type="button" class="btn btn-danger" id="modalRemoveBTN">삭제</button>
+        <button type="button" class="btn btn-danger" id="modalRemoveBtn">삭제</button>
         <button type="button" class="btn btn-primary" id="modalCloseBtn" data-dismiss="modal">닫기</button>
       </div>
     </div>
@@ -149,8 +153,11 @@ $(function(){
 	let modalInputReplydate=modal.find("input[name='replydate']");
 	//모달 영역이 가지고 있는 버튼 찾기
 	let modalRegisterBtn=$("#modalRegisterBtn");
-	let modaModifyrBtn=$("#modaModifyrBtn");
+	let modaModifyrBtn=$("#modalModifyBtn");
 	let modalRemoveBtn=$("#modalRemoveBtn");
+	
+	//페이지 번호 초기값
+	let pageNum=1;
 	
 	$("#addReplyBtn").click(function(){
 		//input 안에 들어 있는 내용 없애주기
@@ -160,8 +167,7 @@ $(function(){
 		//닫기 버튼만 제외하고 모든 버튼을 숨기기
 		modal.find("button[id!='modalCloseBtn']").hide();
 		//등록 버튼 다시 보이기
-		modalRegisterBtn.show();
-		
+		modalRegisterBtn.show();		
 		
 		
 		modal.modal("show");
@@ -175,8 +181,7 @@ $(function(){
 			bno:bno,
 			replyer:modalInputReplyer.val(),
 			reply:modalInputReply.val()
-		}
-		
+		}		
 		regist(reply);		
 	})
 	
@@ -189,14 +194,22 @@ $(function(){
 				//모달 창 종료
 				modal.modal("hide");
 				//전체 댓글 리스트 보기
-				showList(1);
+				//-1을 입력해 마지막 페이지 표시
+				showList(-1);
 		});//add 종료		
 	}
 
 	//댓글 리스트 요청하기
 	function showList(page){
-		replyService.getList({bno:bno,page:page}, function(list){
+		replyService.getList({bno:bno,page:page}, function(total, list){
+			console.log(total);
 			console.log(list);
+			
+			if(page == -1){
+				pageNum = Math.ceil(total / 10.0);
+				showList(pageNum);
+				return;
+			}		
 			
 			if(list==null || list.length===0){
 				replyUl.html("");
@@ -211,23 +224,99 @@ $(function(){
 				str+="<small class='pull-right text-muted'>"+replyService.displayTime(list[i].replydate)+"</small>";
 				str+="</div><p>"+list[i].reply+"</p></div></li>";
 			}
-			replyUl.html(str);			
+			replyUl.html(str);	
+			showReplyPage(total);
 		})//getList 종료		
 	}
 	
-	//댓글 삭제
-	/*replyService.remove(31, 
-			function(result){alert(result);},
-			function(msg){
-			alert(msg);			
-	})//remove 종료*/
 	
-	//댓글 수정
-	/*replyService.modify({rno:999, reply:"댓글 내용 수정"},
-			function(result){alert(result);},
-			function(error){
-				alert("수정 실패");		
-	})//modify 종료*/
+	//댓글 페이지 나누기로 추가
+	//댓글 페이지 영역 가져오기
+	let replyPageFooter=$(".panel-footer");
+	function showReplyPage(total){		
+		
+		//마지막 페이지 계산
+		let endPage=Math.ceil(pageNum/10.0)*10;
+		//시작 페이지 계산
+		let startPage=endPage-9;
+		//이전 버튼
+		let prev=startPage!=1;
+		//다음 버튼
+		let next=false;
+		
+		//실제 마지막 페이지 계산
+		if(endPage*10>=total){
+			endPage=Math.ceil(total/10.0);
+		}
+		if(endPage*10<total){
+			next=true;
+		}
+		
+		//디자인 작성 후 댓글 페이지 영역에 보여주기
+		let str="<ul class='pagination pull-right'>";
+		if(prev){
+			str += "<li class='page-item'><a class='page-link'";
+			str += " href='"+(startPage-1)+"'>Preve</a></li>";
+		}
+		for(var i=startPage;i<=endPage;i++){
+			let active=pageNum == i?"active":"";	//pageNum 이 넘어올 때 => "2" 이런식으로 넘어오기 때문에 ===이 아닌 ==으로 비교 
+			str += "<li class='page-item "+active+"'>";
+			str += "<a class='page-link' href='"+i+"'>"+i;
+			str += "</a></li>";
+		}
+		if(next){
+			str += "<li class='page-item'><a class='page-link'";
+			str += " href='"+(endPage+1)+"'>Next</a></li>";
+		}
+		str += "</ul></div>";
+		replyPageFooter.html(str);
+	}
+	
+	//댓글 페이지 번호를 누르면 실행되는 스크립트
+	replyPageFooter.on("click","li a", function(e){
+		//a 때문에 움직이는 이벤트 제거
+		e.preventDefault();
+		
+		pageNum=$(this).attr("href");
+		showList(pageNum);		
+	})
+	
+	
+	
+	
+	//on("click", ~~~)
+	//	click과 같은 역할이지만, 동적 바인딩 기능이 추가(추후 추가되는 태그에도 click을 수행시키기 위해서)
+	//	여러 이벤트를 동시에 추가할 수 있다
+	$(modalRemoveBtn).on("click", function(){
+		//댓글 삭제 modal.data("rno")
+		replyService.remove(999, 
+				function(result){
+					alert(result);
+					//모달 창 종료
+					modal.modal("hide");
+					//전체 댓글 리스트 보기	=> 댓글 페이지 나누기 전 : showList(1) 					
+					showList(pageNum);	//페이지 나누기 후 : 현재 보던 페이지
+				},
+				function(msg){
+					alert(msg);			
+					
+		})	//remove 종료	
+	})
+
+	$(modaModifyrBtn).on("click", function(){
+		//댓글 수정
+		replyService.modify({rno:modal.data("rno"), reply:modalInputReply.val()},
+				function(result){
+					alert(result);
+					//모달 창 종료
+					modal.modal("hide");
+					//전체 댓글 리스트 보기	=> 댓글 페이지 나누기 전 : showList(1) 					
+					showList(pageNum);	//페이지 나누기 후 : 현재 보던 페이지
+				},
+				function(error){
+					alert("수정 실패");		
+		})//modify 종료		
+	})
 		
 	//댓글 하나 가져오기
 	//실제로는 li에 이벤트를 걸어야 하지만 댓글이 나중에 생기는 부분이기 때문에 
@@ -244,12 +333,13 @@ $(function(){
 					modalInputReplydate.val(replyService.displayTime(result.replydate)).attr("readonly", "readonly");
 					//현재 읽어온 rno 담아주기
 					modal.data("rno", result.rno);
-										
+									
+					modal.find("button").show();	//NewReply에서 버튼을 숨겨 놨기 때문에 댓글 가져오기 시 버튼이 사라짐 해결
+					modalInputReplydate.closest("div").show();
 					modal.find("button[id='modalRegisterBtn']").hide();					
 					modal.modal("show");
 					
-				},function(error){
-			
+				},function(error){			
 		})		
 	})
 })
