@@ -1,9 +1,0 @@
-package com.spring.mapper;
-
-import com.spring.domain.PartnerVO;
-
-public interface PartnerMapper {
-	public int registPartner(PartnerVO partner);
-	public PartnerVO registPartner();
-	
-}

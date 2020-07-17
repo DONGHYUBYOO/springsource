@@ -39,7 +39,7 @@ public class UploadController {
 			//서버 폴더에 파일 저장(File or Path 객체로 저장)
 			File saveFile = new File(uploadPath, f.getOriginalFilename());
 			try {
-				f.transferTo(saveFile);
+				f.transferTo(saveFile);	//서버 폴더에 파일 저장
 			} catch (IllegalStateException | IOException e) {
 				e.printStackTrace();
 			}
@@ -47,6 +47,7 @@ public class UploadController {
 	}
 	
 	//다운로드 컨트롤러
+	//produces : 보내는 파일에 대한 타입 (APPLICATION_OCTET_STREAM_VALUE => 2진타입으로 변환하여 대부분의 파일을 호환)
 	@GetMapping(value="/download", produces=MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	@ResponseBody
 	public ResponseEntity<Resource> downloadFile(String fileName) {
