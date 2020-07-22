@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<link rel="stylesheet" href="/resources/css/mycss.css" />
 <%@include file="../includes/header.jsp" %>
             <div class="row">
                 <div class="col-lg-12">
@@ -43,7 +43,27 @@
                 		</div>
                 	</div>
                 </div>
-            </div>    
+            </div> 
+<%-- 첨부파일 영역 --%>   
+<div class="bigPictureWrapper">
+	<div class="bigPicture">
+	
+	</div>
+</div>  
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+		<div class="panel-heading"><i class="fa fas fa-file"></i>Files</div>
+			<div class="panel-body">
+				<div class="uploadResult">
+					<ul>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>   
 <%-- 댓글 영역 --%>
 <div class="row">
 	<div class="col-lg-12">
@@ -135,10 +155,69 @@ $(function(){
 </script>
 <script src="/resources/js/reply.js"></script>
 <script>
+function showImage(fileCallPath){
+	$(".bigPictureWrapper").css("display", "flex").show();	
+	$(".bigPicture").html("<img src='/display?fileName="+fileCallPath+"'>").animate({width: '100%', height: '100%'}, 1000);
+}
 $(function(){
 	//현재 글의 글 번호 가져오기
 	let bno=${read.bno};
 	
+	<%-- 첨부파일 영역 표시 --%>
+	//bno를 보내서 해당 게시물의 첨부파일 내역 가져오기
+	//http://~~/board/getAttachList
+	$.getJSON("getAttachList", {bno:bno}, function(data){
+		console.log(data);	//json 형태로 데이터 도착
+		
+		let str="";
+		//첨부파일 목록을 보여줄 영역 찾아오기
+		let uploadResult=$(".uploadResult ul");
+		
+		$(data).each(function(i,item){
+			if(item.fileType){	//이미지
+				var fileCallPath=encodeURIComponent(item.uploadPath+"\\s_"+item.uuid+"_"+item.fileName);
+			
+				str+="<li data-path='"+item.uploadPath+"' data-uuid='"+item.uuid+"'";
+				str+=" data-filename='"+item.fileName+"' data-type='"+item.fileType+"'>";
+				str+="<div><span><a>"+item.fileName+"</span></div>";
+				str+="<img src='/display?fileName="+fileCallPath+"'></a></li>";
+			}else{	//일반 파일
+				var fileCallPath=encodeURIComponent(item.uploadPath+"\\"+item.uuid+"_"+item.fileName);
+			
+				str += "<li data-path='"+ item.uploadPath +"' data-uuid='"+item.uuid+"'";
+				str += " data-filename='"+item.fileName+"' data-type='"+item.fileType+"'>";
+				str += "<div><span><a>"+item.fileName+"</span></div>";
+				str += "<img src='/resources/img/attach.png'></a></li>";
+			}
+		})
+		uploadResult.html(str);
+	})//첨부파일 내역 종료
+	
+	//첨부파일 처리
+	$(".uploadResult").on("click", "li", function(){
+		//이미지 파일은 크게 보여주고, 일판 파일은 다운로드 창 띄우기
+		
+		//클릭된 객체 가져오기
+		let liObj=$(this);
+		
+		//인코딩
+		var fileCallPath=encodeURIComponent(liObj.data("path")+"\\"+liObj.data("uuid")+"_"+liObj.data("filename"));
+		if(liObj.data("type")){
+			showImage(fileCallPath.replace(new RegExp(/\\/g), "/"));
+		}else{
+			location.href="/download?fileName="+fileCallPath;
+		}
+	})//첨부파일 처리 종료
+	
+	//확대 사진 닫기
+	$(".bigPictureWrapper").on("click", function(){
+		$(".bigPicture").animate({width: '0%', height: '0%'}, 1000);
+		setTimeout(function(){
+			$(".bigPictureWrapper").hide();	//bigPictureWrapper 를 숨기는 절차
+		}, 1000);		
+	})
+	
+	<%-- 댓글영역 표시 --%>
 	//댓글 영역 가져오기
 	let replyUl=$(".chat");
 	

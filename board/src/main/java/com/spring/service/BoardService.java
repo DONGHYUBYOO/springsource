@@ -3,6 +3,7 @@ package com.spring.service;
 import java.util.List;
 
 import com.spring.domain.ArticleVO;
+import com.spring.domain.AttachFileVO;
 import com.spring.domain.CriteriaVO;
 import com.spring.domain.ModifyVO;
 import com.spring.domain.ReadVO;
@@ -16,4 +17,7 @@ public interface BoardService {
 	public ReadVO getArticle(int bno);
 	public int modifyArticle(ModifyVO modify);
 	public int removeArticle(int bno);
+	
+	//첨부파일
+	public List<AttachFileVO> searchAttach(int bno);
 }

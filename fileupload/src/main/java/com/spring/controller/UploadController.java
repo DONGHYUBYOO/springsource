@@ -46,25 +46,5 @@ public class UploadController {
 		}
 	}
 	
-	//다운로드 컨트롤러
-	//produces : 보내는 파일에 대한 타입 (APPLICATION_OCTET_STREAM_VALUE => 2진타입으로 변환하여 대부분의 파일을 호환)
-	@GetMapping(value="/download", produces=MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	@ResponseBody
-	public ResponseEntity<Resource> downloadFile(String fileName) {
-		log.info("다운로드 파일 : "+fileName);
-		
-		Resource resource = new FileSystemResource("d:\\JAVA_Upload\\"+fileName);
-		
-		String resourName=resource.getFilename();
-		
-		//브라우저 헤더에 붙여 보내기
-		HttpHeaders headers = new HttpHeaders();
-		try {
-			headers.add("Content-Disposition", "attachment;fileName="
-					+new String(resourName.getBytes("utf-8"), "ISO-8859-1"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
-	}
+	
 }
